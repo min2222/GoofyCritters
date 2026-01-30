@@ -1,0 +1,15 @@
+{
+	"itemGroup.goofycritters": "Goofy Critters",
+	"entity.goofycritters.camera_shake": "Camera Shake",
+	"entity.goofycritters.gestalt": "Gestalt",
+	"entity.goofycritters.masked": "Masked",
+	"entity.goofycritters.eyes": "Eyes",
+	"item.goofycritters.bucket_of_gestalt": "Bucket of Gestalt",
+	"item.goofycritters.goofy_mask": "Mask of Goofy",
+	"item.goofycritters.goofy_mask.desc": "Feels so goofy...",
+	"item.goofycritters.gestalt_spawn_egg": "Gestalt Spawn Egg",
+	"item.goofycritters.masked_spawn_egg": "Masked Spawn Egg",
+	"item.goofycritters.eyes_spawn_egg": "Eyes Spawn Egg",
+	"effect.goofycritters.zen": "Gaze of Eyes",
+	"effect.goofycritters.zen.description": "Grants fall damage immunity."
+}

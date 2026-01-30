@@ -1,0 +1,22 @@
+package com.min01.goofy.entity;
+
+public interface IAnimatable
+{
+	void setUsingSkill(boolean value);
+	
+	boolean isUsingSkill();
+	
+	void setAnimationTick(int value);
+	
+	int getAnimationTick();
+	
+	boolean canMove();
+	
+	void setCanMove(boolean value);
+	
+	boolean canLook();
+	
+	void moveToTarget();
+
+	void lookAtTarget();
+}
