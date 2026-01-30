@@ -1,6 +1,7 @@
 package com.min01.goofy.entity;
 
 import com.min01.goofy.GoofyCritters;
+import com.min01.goofy.entity.living.EntityEyes;
 import com.min01.goofy.entity.living.EntityGestalt;
 import com.min01.goofy.entity.living.EntityGestaltHand;
 
@@ -21,6 +22,8 @@ public class GoofyEntities
 	public static final RegistryObject<EntityType<EntityGestalt>> GESTALT = registerEntity("gestalt", createBuilder(EntityGestalt::new, MobCategory.CREATURE).sized(1.0F, 1.0F).fireImmune());
 	public static final RegistryObject<EntityType<EntityGestaltHand>> GESTALT_HAND = registerEntity("gestalt_hand", createBuilder(EntityGestaltHand::new, MobCategory.MISC).sized(0.25F, 0.25F).clientTrackingRange(100));
 
+	public static final RegistryObject<EntityType<EntityEyes>> EYES = registerEntity("eyes", createBuilder(EntityEyes::new, MobCategory.CREATURE).sized(1.0F, 1.25F).fireImmune());
+	
 	public static <T extends Entity> EntityType.Builder<T> createBuilder(EntityType.EntityFactory<T> factory, MobCategory category)
 	{
 		return EntityType.Builder.<T>of(factory, category);

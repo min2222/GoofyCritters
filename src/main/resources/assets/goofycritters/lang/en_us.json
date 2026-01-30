@@ -10,6 +10,6 @@
 	"item.goofycritters.gestalt_spawn_egg": "Gestalt Spawn Egg",
 	"item.goofycritters.masked_spawn_egg": "Masked Spawn Egg",
 	"item.goofycritters.eyes_spawn_egg": "Eyes Spawn Egg",
-	"effect.goofycritters.zen": "Gaze of Eyes",
-	"effect.goofycritters.zen.description": "Grants fall damage immunity."
+	"effect.goofycritters.gaze_of_eyes": "Gaze of Eyes",
+	"effect.goofycritters.gaze_of_eyes.description": "Grants fall damage immunity."
 }

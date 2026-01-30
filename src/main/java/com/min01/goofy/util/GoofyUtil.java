@@ -3,6 +3,7 @@ package com.min01.goofy.util;
 import java.lang.reflect.Method;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
 import org.joml.Math;
 
@@ -14,9 +15,14 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.LevelEntityGetter;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.LogicalSidedProvider;
@@ -35,6 +41,27 @@ public class GoofyUtil
 			consumer.accept(level);
 		});
 	}
+	
+    public static <T extends Mob> Vec3 generateNewTarget(T mob, Predicate<BlockState> predicate) 
+    {
+        Level world = mob.level;
+        Vec3 radius = new Vec3(10, 5, 10);
+        for(int i = 0; i < 10; i++)
+        {
+        	Vec3 pos = getSpreadPosition(mob, radius);
+        	HitResult hitResult = world.clip(new ClipContext(mob.position(), pos, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mob));
+        	if(hitResult instanceof BlockHitResult blockHit)
+        	{
+                BlockPos targetPos = blockHit.getBlockPos();
+                BlockState blockState = world.getBlockState(targetPos);
+                if(predicate.test(blockState))
+                {
+                	return blockHit.getLocation();
+                }
+        	}
+        }
+        return null;
+    }
 	
 	@SuppressWarnings("unchecked")
 	public static <T extends Entity> T getEntityByUUID(Level level, UUID uuid)

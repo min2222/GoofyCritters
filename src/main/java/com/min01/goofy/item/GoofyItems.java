@@ -23,6 +23,8 @@ public class GoofyItems
 	public static final RegistryObject<Item> BUCKET_OF_GESTALT = ITEMS.register("bucket_of_gestalt", () -> new GoofyMobBucketItem(() -> GoofyEntities.GESTALT.get(), () -> SoundEvents.MUD_PLACE, new Item.Properties()));
 	public static final RegistryObject<Item> GESTALT_SPAWN_EGG = registerSpawnEgg("gestalt_spawn_egg", () -> GoofyEntities.GESTALT.get(), 394758, 2368548);
 	
+	public static final RegistryObject<Item> EYES_SPAWN_EGG = registerSpawnEgg("eyes_spawn_egg", () -> GoofyEntities.EYES.get(), 13750737, 6751493);
+	
 	public static final RegistryObject<Item> GOOFY_MASK = ITEMS.register("goofy_mask", () -> new GoofyMaskItem(new Item.Properties()));
 	
 	public static RegistryObject<Item> registerBlockItem(String name, Supplier<Block> block, Item.Properties properties)

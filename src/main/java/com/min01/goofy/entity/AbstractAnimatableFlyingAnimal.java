@@ -1,7 +1,5 @@
 package com.min01.goofy.entity;
 
-import com.min01.goofy.entity.ai.navigation.FixedPathNavigation;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -12,24 +10,24 @@ import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public abstract class AbstractAnimatableMonster extends Monster implements IAnimatable, IPosArray
+public abstract class AbstractAnimatableFlyingAnimal extends AbstractFlyingAnimal implements IAnimatable, IPosArray
 {
-	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractAnimatableMonster.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractAnimatableMonster.class, EntityDataSerializers.INT);
-	public static final EntityDataAccessor<Boolean> CAN_LOOK = SynchedEntityData.defineId(AbstractAnimatableMonster.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractAnimatableMonster.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractAnimatableMonster.class, EntityDataSerializers.BOOLEAN);
-	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractAnimatableMonster.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(AbstractAnimatableFlyingAnimal.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> ANIMATION_TICK = SynchedEntityData.defineId(AbstractAnimatableFlyingAnimal.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Boolean> CAN_LOOK = SynchedEntityData.defineId(AbstractAnimatableFlyingAnimal.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> CAN_MOVE = SynchedEntityData.defineId(AbstractAnimatableFlyingAnimal.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> HAS_TARGET = SynchedEntityData.defineId(AbstractAnimatableFlyingAnimal.class, EntityDataSerializers.BOOLEAN);
+	public static final EntityDataAccessor<Boolean> IS_USING_SKILL = SynchedEntityData.defineId(AbstractAnimatableFlyingAnimal.class, EntityDataSerializers.BOOLEAN);
 
 	public Vec3[] posArray;
 	
-	public AbstractAnimatableMonster(EntityType<? extends Monster> pEntityType, Level pLevel)
+	public AbstractAnimatableFlyingAnimal(EntityType<? extends AbstractFlyingAnimal> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.noCulling = true;
@@ -48,7 +46,7 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
 	}
 	
 	@Override
-	protected void registerGoals()
+	protected void registerGoals() 
 	{
 		this.registerDefaultGoals();
 	}
@@ -61,7 +59,7 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && AbstractAnimatableMonster.this.canMoveAround();
+				return super.canUse() && AbstractAnimatableFlyingAnimal.this.canMoveAround();
 			}
 		});
 		this.goalSelector.addGoal(0, new RandomLookAroundGoal(this)
@@ -69,7 +67,7 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && AbstractAnimatableMonster.this.canLookAround();
+				return super.canUse() && AbstractAnimatableFlyingAnimal.this.canLookAround();
 			}
 		});
 		this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F)
@@ -77,7 +75,7 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && AbstractAnimatableMonster.this.canLookAround();
+				return super.canUse() && AbstractAnimatableFlyingAnimal.this.canLookAround();
 			}
 		});
 		this.goalSelector.addGoal(0, new LookAtPlayerGoal(this, Mob.class, 8.0F)
@@ -85,7 +83,7 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
 			@Override
 			public boolean canUse()
 			{
-				return super.canUse() && AbstractAnimatableMonster.this.canLookAround();
+				return super.canUse() && AbstractAnimatableFlyingAnimal.this.canLookAround();
 			}
 		});
 	}
@@ -116,7 +114,11 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
     @Override
     protected PathNavigation createNavigation(Level pLevel)
     {
-    	return new FixedPathNavigation(this, pLevel);
+    	FlyingPathNavigation navigation = new FlyingPathNavigation(this, pLevel);
+    	navigation.setCanOpenDoors(false);
+    	navigation.setCanFloat(true);
+    	navigation.setCanPassDoors(true);
+    	return navigation;
     }
     
     public void onAnimationEnd(int animationState)
@@ -143,7 +145,7 @@ public abstract class AbstractAnimatableMonster extends Monster implements IAnim
 	
 	public boolean canMoveAround()
 	{
-		return this.canMove() && !this.isUsingSkill() && !this.hasTarget();
+		return this.canMove() && !this.isUsingSkill() && !this.hasTarget() && !this.isFlying();
 	}
 	
     @Override
