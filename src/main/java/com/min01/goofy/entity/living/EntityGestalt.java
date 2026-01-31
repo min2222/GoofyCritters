@@ -78,6 +78,24 @@ public class EntityGestalt extends AbstractAnimatableTamableAnimal implements Bu
         		this.controller.setTarget(target);
     		}
     	}
+    	else if(this.getOwner() != null)
+    	{
+    		if(this.distanceTo(this.getOwner()) >= 6.0F)
+    		{
+        		this.controller.setTarget(this.getOwner().position());
+    		}
+    	}
+    	else
+    	{
+    		Player player = this.level.getNearestPlayer(this.getX(), this.getY(), this.getZ(), 100, true);
+    		if(player != null)
+    		{
+        		if(this.distanceTo(player) >= 6.0F)
+        		{
+            		this.controller.setTarget(player.position());
+        		}
+    		}
+    	}
     }
     
     @Override

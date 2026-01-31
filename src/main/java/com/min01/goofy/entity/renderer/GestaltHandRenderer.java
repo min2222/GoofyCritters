@@ -66,7 +66,7 @@ public class GestaltHandRenderer extends EntityRenderer<EntityGestaltHand>
                 Vec3 smoothedVec = remainingDistance < 1.0F ? linearVec : powVec;
                 Vec3 next = smoothedVec.normalize().scale(remainingDistance).add(current);
                 Vec2 rot = GoofyUtil.lookAt(current, next);
-                int light = this.getLightColor(pEntity, bottom.add(current).add(entityPos));
+                int light = this.getLightColor(pEntity, bottom.add(current).add(ownerPos));
                 
     			pPoseStack.pushPose();
     			pPoseStack.scale(-1.0F, -1.0F, 1.0F);
