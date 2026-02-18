@@ -28,7 +28,7 @@ public class GoofyClientUtil
 	
 	//https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/animate/client/util/ModelPartUtils.java#L57
     
-    public static Vec3 getWorldPosition(Entity entity, ModelPart root, boolean translateToEntity, Vec3 rotation, String... modelPartName)
+    public static Vec3 getWorldPosition(Entity entity, ModelPart root, Vec3 rotation, String... modelPartName)
     {
         PoseStack poseStack = new PoseStack();
         float partialTick = MC.getFrameTime();

@@ -4,11 +4,11 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.control.LookControl;
 
-public class GoofyFlyingLookControl extends LookControl 
+public class FlyingLookControl extends LookControl 
 {
 	private final int maxYRotFromCenter;
 	
-	public GoofyFlyingLookControl(Mob mob, int maxYRotFromCenter) 
+	public FlyingLookControl(Mob mob, int maxYRotFromCenter) 
 	{
 		super(mob);
 		this.maxYRotFromCenter = maxYRotFromCenter;

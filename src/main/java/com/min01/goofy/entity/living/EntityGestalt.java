@@ -1,6 +1,6 @@
 package com.min01.goofy.entity.living;
 
-import com.min01.goofy.entity.AbstractAnimatableTamableAnimal;
+import com.min01.goofy.entity.AbstractAnimatableAnimal;
 import com.min01.goofy.item.GoofyItems;
 import com.min01.goofy.misc.GestaltController;
 import com.min01.goofy.util.GoofyUtil;
@@ -29,7 +29,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 
-public class EntityGestalt extends AbstractAnimatableTamableAnimal implements Bucketable
+public class EntityGestalt extends AbstractAnimatableAnimal implements Bucketable
 {
 	public final GestaltController controller;
 	

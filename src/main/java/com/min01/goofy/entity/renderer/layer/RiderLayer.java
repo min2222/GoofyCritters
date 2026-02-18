@@ -27,17 +27,18 @@ public class RiderLayer<T extends LivingEntity, M extends EntityModel<T>> extend
 	{
 		if(entity.getFirstPassenger() != null)
 		{
-			boolean flag = entity.getFirstPassenger() instanceof Player ? !GoofyClientUtil.MC.options.getCameraType().isFirstPerson() : true;
+			Entity passenger = entity.getFirstPassenger();
+			boolean flag = passenger instanceof Player ? !GoofyClientUtil.MC.options.getCameraType().isFirstPerson() : true;
 			if(flag && entity.isAlive())
 			{
 				poseStack.pushPose();
-				EntityRenderer<? super Entity> entityRenderer = GoofyClientUtil.MC.getEntityRenderDispatcher().getRenderer(entity.getFirstPassenger());
-				ClientEventHandlerForge.RENDERER_LIST.remove(entity.getFirstPassenger().getUUID());
+				EntityRenderer<? super Entity> entityRenderer = GoofyClientUtil.MC.getEntityRenderDispatcher().getRenderer(passenger);
+				ClientEventHandlerForge.RENDERER_LIST.remove(passenger.getUUID());
 				this.transform(poseStack);
 	            poseStack.mulPose(Axis.XN.rotationDegrees(180.0F));
 	            poseStack.mulPose(Axis.YN.rotationDegrees(360.0F - Mth.lerp(partialTicks, entity.yBodyRotO, entity.yBodyRot)));
-				entityRenderer.render(entity.getFirstPassenger(), 0, partialTicks, poseStack, bufferIn, packedLightIn);
-				ClientEventHandlerForge.RENDERER_LIST.add(entity.getFirstPassenger().getUUID());
+				entityRenderer.render(passenger, 0, partialTicks, poseStack, bufferIn, packedLightIn);
+				ClientEventHandlerForge.RENDERER_LIST.add(passenger.getUUID());
 				poseStack.popPose();
 			}
 		}
