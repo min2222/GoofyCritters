@@ -3,7 +3,7 @@ package com.min01.goofy.network;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import com.min01.goofy.entity.IPosArray;
+import com.min01.goofy.entity.IAnimatable;
 import com.min01.goofy.misc.GoofyEntityDataSerializers;
 import com.min01.goofy.util.GoofyUtil;
 
@@ -44,7 +44,7 @@ public class UpdatePosArrayPacket
 			if(ctx.get().getDirection().getReceptionSide().isServer())
 			{
 				Entity entity = GoofyUtil.getEntityByUUID(ctx.get().getSender().level, message.entityUUID);
-				if(entity instanceof IPosArray mob) 
+				if(entity instanceof IAnimatable mob) 
 				{
 					mob.getPosArray()[message.array] = message.pos;
 				}
@@ -54,7 +54,7 @@ public class UpdatePosArrayPacket
 				GoofyUtil.getClientLevel(t -> 
 				{
 					Entity entity = GoofyUtil.getEntityByUUID(t, message.entityUUID);
-					if(entity instanceof IPosArray mob) 
+					if(entity instanceof IAnimatable mob) 
 					{
 						mob.getPosArray()[message.array] = message.pos;
 					}
