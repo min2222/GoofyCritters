@@ -38,7 +38,7 @@ public class ClientEventHandlerForge
     public static void onComputeCameraAngles(ViewportEvent.ComputeCameraAngles event) 
     {
         Player player = GoofyClientUtil.MC.player;
-        float delta = GoofyClientUtil.MC.getFrameTime();
+        float delta = GoofyClientUtil.MC.getPartialTick();
         float ticksExistedDelta = player.tickCount + delta;
         if(player != null && GoofyConfig.cameraShakes.get())
         {
