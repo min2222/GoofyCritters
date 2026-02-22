@@ -121,9 +121,11 @@ public abstract class AbstractAnimatableAnimal extends TamableAnimal implements 
 		
 		if(this.getAnimationState() != 0 && this.getAnimationTick() <= 0)
 		{
-			this.onAnimationEnd(this.getAnimationState());
-			this.setAnimationState(0);
-			this.setAnimationPlaying(false);
+			if(this.onAnimationEnd(this.getAnimationState()))
+			{
+				this.setAnimationState(0);
+				this.setAnimationPlaying(false);
+			}
 		}
     }
     
@@ -139,9 +141,9 @@ public abstract class AbstractAnimatableAnimal extends TamableAnimal implements 
     	return new FixedPathNavigation(this, pLevel);
     }
     
-    public void onAnimationEnd(int animationState)
+    public boolean onAnimationEnd(int animationState)
     {
-    	
+    	return true;
     }
     
     @Override
