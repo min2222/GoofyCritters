@@ -32,8 +32,8 @@ public class EntityEyes extends AbstractAnimatableFlyingAnimal
     {
         return Mob.createMobAttributes()
     			.add(Attributes.MAX_HEALTH, 30.0F)
-    			.add(Attributes.FLYING_SPEED, 0.35F)
-    			.add(Attributes.MOVEMENT_SPEED, 0.35F)
+    			.add(Attributes.FLYING_SPEED, 0.2F)
+    			.add(Attributes.MOVEMENT_SPEED, 0.2F)
     			.add(Attributes.FOLLOW_RANGE, 100.0F);
     }
     
@@ -50,15 +50,9 @@ public class EntityEyes extends AbstractAnimatableFlyingAnimal
     		this.getOwner().addEffect(new MobEffectInstance(GoofyEffects.GAZE_OF_EYES.get(), 100, 0));
     		if(this.distanceTo(this.getOwner()) >= 6.0F)
     		{
-    			this.getNavigation().moveTo(this.getOwner(), 1.25F);
+    			this.getNavigation().moveTo(this.getOwner(), 1.5F);
     		}
     	}
-    }
-    
-    @Override
-    public float getRelativeSpeed()
-    {
-    	return 0.1F;
     }
     
     @Override
