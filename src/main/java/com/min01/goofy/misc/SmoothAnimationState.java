@@ -17,7 +17,7 @@ public class SmoothAnimationState extends AnimationState
 	public static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
 	
 	public float factorOld;
-	public float factor = -1.0F;
+	public float factor;
 	public final float lerpSpeed;
 	
 	public SmoothAnimationState(float lerpSpeed)
@@ -36,7 +36,7 @@ public class SmoothAnimationState extends AnimationState
 	    this.factorOld = this.factor;
 	    this.factor += (target - this.factor) * this.lerpSpeed;
 	    this.factor = Mth.clamp(this.factor, 0.0F, 1.0F);
-	    this.animateWhen(this.factor > 0.08F, tickCount);
+	    this.animateWhen(updateWhen, tickCount);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -108,9 +108,6 @@ public class SmoothAnimationState extends AnimationState
 	public void animate(HierarchicalModel<?> model, AnimationDefinition definition, float ageInTicks, float factor, float speed) 
 	{
 		this.updateTime(ageInTicks, speed);
-		this.ifStarted(t -> 
-		{
-			KeyframeAnimations.animate(model, definition, t.getAccumulatedTime(), factor, ANIMATION_VECTOR_CACHE);
-		});
+		KeyframeAnimations.animate(model, definition, this.getAccumulatedTime(), factor, ANIMATION_VECTOR_CACHE);
 	}
 }
