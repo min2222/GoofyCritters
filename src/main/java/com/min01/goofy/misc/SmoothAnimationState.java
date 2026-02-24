@@ -17,7 +17,7 @@ public class SmoothAnimationState extends AnimationState
 	public static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
 	
 	public float factorOld;
-	public float factor;
+	public float factor = -1.0F;
 	public final float lerpSpeed;
 	
 	public SmoothAnimationState(float lerpSpeed)
@@ -30,13 +30,13 @@ public class SmoothAnimationState extends AnimationState
 		this(0.5F);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	public void updateWhen(boolean updateWhen, int tickCount)
 	{
+    	float target = updateWhen ? 1.0F : 0.0F;
 	    this.factorOld = this.factor;
-	    this.factor = Mth.lerp(GoofyClientUtil.MC.getPartialTick() * this.lerpSpeed, this.factor, updateWhen ? 1.0F : 0.0F);
+	    this.factor += (target - this.factor) * this.lerpSpeed;
 	    this.factor = Mth.clamp(this.factor, 0.0F, 1.0F);
-	    this.animateWhen(this.factor > 0.0F, tickCount);
+	    this.animateWhen(this.factor > 0.08F, tickCount);
 	}
 
 	@OnlyIn(Dist.CLIENT)
@@ -79,7 +79,7 @@ public class SmoothAnimationState extends AnimationState
 	}
 	
 	@OnlyIn(Dist.CLIENT)
-	public static void animateWalk(HierarchicalModel<?> model, AnimationDefinition definition, float ageInTicks, float limbSwing, float limbSwingAmount, float maxAnimationSpeed, float animationScaleFactor, SmoothAnimationState... states)
+	public static void animateWalk(HierarchicalModel<?> model, AnimationDefinition definition, float limbSwing, float limbSwingAmount, float maxAnimationSpeed, float animationScaleFactor, SmoothAnimationState... states)
 	{
 		float totalFactor = 1.0F;
 		for(SmoothAnimationState state : states)
@@ -91,7 +91,7 @@ public class SmoothAnimationState extends AnimationState
 	}
 
 	@OnlyIn(Dist.CLIENT)
-	public void animateWalk(HierarchicalModel<?> model, AnimationDefinition definition, float ageInTicks, float limbSwing, float limbSwingAmount, float maxAnimationSpeed, float animationScaleFactor)
+	public void animateWalkWithFactor(HierarchicalModel<?> model, AnimationDefinition definition, float limbSwing, float limbSwingAmount, float maxAnimationSpeed, float animationScaleFactor)
 	{
 		animateWalk(model, definition, limbSwing, limbSwingAmount, maxAnimationSpeed, this.factor() * animationScaleFactor);
 	}

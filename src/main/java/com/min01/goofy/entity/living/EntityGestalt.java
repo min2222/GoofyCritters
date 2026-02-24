@@ -16,7 +16,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -33,7 +32,7 @@ public class EntityGestalt extends AbstractAnimatableAnimal implements Bucketabl
 {
 	public final GestaltController controller;
 	
-	public EntityGestalt(EntityType<? extends TamableAnimal> pEntityType, Level pLevel)
+	public EntityGestalt(EntityType<? extends AbstractAnimatableAnimal> pEntityType, Level pLevel)
 	{
 		super(pEntityType, pLevel);
 		this.setNoGravity(true);

@@ -1,7 +1,5 @@
 package com.min01.goofy.entity;
 
-import com.min01.goofy.entity.ai.control.FlyingLookControl;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -11,8 +9,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.TamableAnimal;
-import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -27,7 +23,6 @@ public abstract class AbstractFlyingAnimal extends TamableAnimal
 	public AbstractFlyingAnimal(EntityType<? extends TamableAnimal> pEntityType, Level pLevel) 
 	{
 		super(pEntityType, pLevel);
-		this.lookControl = new FlyingLookControl(this, 10);
 	}
 	
 	@Override
@@ -46,46 +41,54 @@ public abstract class AbstractFlyingAnimal extends TamableAnimal
 	@Override
 	public void travel(Vec3 pTravelVector)
 	{
-		if(this.isControlledByLocalInstance())
+		if(this.isFlying())
 		{
-			if(this.isInWater() && this.isAffectedByFluids())
+			if(this.isControlledByLocalInstance())
 			{
-				this.moveRelative(0.02F, pTravelVector);
-				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale((double) 0.8F));
-			} 
-			else if(this.isInLava() && this.isAffectedByFluids()) 
-			{
-				this.moveRelative(0.02F, pTravelVector);
-				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
-			}
-			else 
-			{
-				BlockPos ground = this.getBlockPosBelowThatAffectsMyMovement();
-				float f = 0.91F;
-				if(this.onGround())
+				if(this.isInWater() && this.isAffectedByFluids())
 				{
-					f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
-				}
-				float f1 = 0.16277137F / (f * f * f);
-				f = 0.91F;
-				if(this.onGround())
+					this.moveRelative(0.02F, pTravelVector);
+					this.move(MoverType.SELF, this.getDeltaMovement());
+					this.setDeltaMovement(this.getDeltaMovement().scale((double) 0.8F));
+				} 
+				else if(this.isInLava() && this.isAffectedByFluids()) 
 				{
-					f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+					this.moveRelative(0.02F, pTravelVector);
+					this.move(MoverType.SELF, this.getDeltaMovement());
+					this.setDeltaMovement(this.getDeltaMovement().scale(0.5D));
 				}
-				this.moveRelative(this.onGround() ? 0.1F * f1 : this.getRelativeSpeed(), pTravelVector);
-				this.move(MoverType.SELF, this.getDeltaMovement());
-				this.setDeltaMovement(this.getDeltaMovement().scale((double) f));
+				else 
+				{
+					BlockPos ground = this.getBlockPosBelowThatAffectsMyMovement();
+					float f = 0.91F;
+					if(this.onGround())
+					{
+						f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+					}
+					float f1 = 0.16277137F / (f * f * f);
+					f = 0.91F;
+					if(this.onGround())
+					{
+						f = this.level.getBlockState(ground).getFriction(this.level, ground, this) * 0.91F;
+					}
+					this.moveRelative(this.onGround() ? 0.1F * f1 : this.getRelativeSpeed(), pTravelVector);
+					this.move(MoverType.SELF, this.getDeltaMovement());
+					this.setDeltaMovement(this.getDeltaMovement().scale((double) f));
+				}
 			}
+			this.calculateEntityAnimation(false);
 		}
-		this.calculateEntityAnimation(false);
+		else
+		{
+			super.travel(pTravelVector);
+		}
 	}
 	
 	@Override
 	public void tick() 
 	{
 		super.tick();
+		this.switchControl(this.isFlying());
 	    Vec3 movement = this.getDeltaMovement();
 	    float speed = (float) movement.length();
 	    this.rollAngleO = this.rollAngle;
@@ -117,12 +120,6 @@ public abstract class AbstractFlyingAnimal extends TamableAnimal
 	public boolean onClimbable()
 	{
 		return false;
-	}
-	
-	@Override
-	protected PathNavigation createNavigation(Level pLevel) 
-	{
-		return new FlyingPathNavigation(this, pLevel);
 	}
 	
 	public void switchControl(boolean isFlying)
