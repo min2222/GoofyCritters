@@ -29,7 +29,7 @@ public abstract class AbstractFlyingAnimal extends TamableAnimal
 	protected void defineSynchedData() 
 	{
 		super.defineSynchedData();
-		this.entityData.define(IS_FLYING, false);
+		this.entityData.define(IS_FLYING, true);
 	}
 
 	@Override
