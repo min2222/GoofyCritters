@@ -15,8 +15,8 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.AirAndWaterRandomPos;
 import net.minecraft.world.entity.ai.util.HoverRandomPos;
@@ -65,7 +65,7 @@ public abstract class AbstractAnimatableFlyingAnimal extends AbstractFlyingAnima
 	public void registerDefaultGoals()
 	{
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(0, new WaterAvoidingRandomStrollGoal(this, 1.0F, this.getMoveInterval())
+		this.goalSelector.addGoal(0, new RandomStrollGoal(this, 1.0F, this.getMoveInterval(), false)
 		{
 			@Override
 			public boolean canUse()
